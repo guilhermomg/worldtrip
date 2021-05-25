@@ -1,8 +1,22 @@
-import { Box, Flex, Image, Stack, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Center, Divider, Flex, Image, Stack, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
+import { GetStaticProps } from "next";
 import React from "react";
-import Header from "../components/Header";
 
-export default function Home() {
+import Carousel from "../components/Carousel";
+import Header from "../components/Header";
+import Slider from "../components/Slider";
+import TravelTypes from "../components/TravelTypes";
+
+interface HomeProps {
+    continents:{
+        id: number;
+        name: string;
+        summary: string;
+        image: string;
+    }[]
+  }
+
+export default function Home({ continents }: HomeProps) {
     const isWideVersion = useBreakpointValue({
         base: false,
         lg: true
@@ -14,7 +28,7 @@ export default function Home() {
 
             <Flex
                 w="100%"
-                h="335px"
+                h={["163px", "335px"]}
                 backgroundImage="url('/images/banner.svg')"
                 backgroundPosition="center"
                 backgroundRepeat="no-repeat"
@@ -22,12 +36,12 @@ export default function Home() {
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <Stack ml={40}>
+                <Stack ml={{ base: 4, lg: 40 }} mt={{ base: 4, lg: 0 }}>
                     <Text
                         color="gray.100"
                         fontSize={["20px", "36px"]}
                         fontWeight="500"
-                        mb="4"
+                        mb={4}
                     >
                         5 Continentes, <br /> 
                         Infinitas possibilidades.
@@ -36,9 +50,9 @@ export default function Home() {
                         color="gray.100"
                         fontSize={["14px", "20px"]}
                         fontWeight="400"
+                        maxW="600px"
                     >
-                        Chegou a hora de tirar do papel a viagem que você <br /> 
-                        sempre sonhou.
+                        Chegou a hora de tirar do papel a viagem que você sempre sonhou.
                     </Text>
                 </Stack>
 
@@ -46,12 +60,55 @@ export default function Home() {
                     <Image
                         src="/images/airplane.svg"
                         alt="airplane"
-                        position="absolute"
-                        right={40}
-                        bottom="-10"
+                        mr={40}
+                        mb={-36}
                     />
                 }
             </Flex>
+
+            <TravelTypes />
+
+            <Center mx={40} height={["72px", "100px"]}>
+                <Divider orientation="horizontal" borderColor="#47585B" width="20" />
+            </Center>
+
+            <Center>
+                <Text 
+                    textAlign="center"
+                    fontWeight="500"
+                    fontSize={["20px", "36px"]}
+                    lineHeight={["30px", "54px"]}
+                >
+                    Vamos nessa? <br />
+                    Então escolha seu continente
+                </Text>
+            </Center>
+
+            <Slider continents={continents} />
         </>
     )
 }     
+
+export const getStaticProps: GetStaticProps = async() => {
+
+    const continents = [
+        {
+            id: 1,
+            name: "Europa",
+            summary: "asdasdsadd",
+            image: "images/continents/europa/carousel-europa.svg",
+        },
+        {
+            id: 2,
+            name: "América do Sul",
+            summary: "asdasdsadd",
+            image: "images/continents/europa/carousel-europa.svg",
+        },
+    ]
+
+    return {
+       props: {
+           continents
+       }
+   } 
+}
