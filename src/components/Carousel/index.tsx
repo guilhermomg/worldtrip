@@ -1,38 +1,58 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Pagination, Navigation } from "swiper";
-import CarouselItem from "./CarouselItem";
+import { Flex, Heading, Text } from '@chakra-ui/react';
+import Link from 'next/link';
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper';
 
-import { Box, Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
-interface CarouselItem {
-  id: number;
+interface Continent {
+  slug: string;
   name: string;
   summary: string;
   image: string;
 }
 
-interface CarouselProps {
-  items: CarouselItem[];
+interface SliderProps {
+  continents: Continent[]
 }
 
-export default function Carousel({ items }: CarouselProps) {
+export default function Carousel({continents}: SliderProps) {
   return (
-    <Flex as="section" direction="column" w="100%" align="center">
-      <Box h="450px" w="100%" maxW={1240} mx="auto" mb="4rem" my={20}>
-        <Swiper slidesPerView={1} navigation pagination>
-          {items?.map((item) => (
-            <SwiperSlide key={item.id}>
-              <CarouselItem 
-                id={item.id}
-                name={item.name}
-                summary={item.summary}
-                image={item.image} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Box>
+    <Flex w="100%" h={["250px","450px"]} maxW="1240px" mx="auto" my={["5","10"]}>
+      <Swiper
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{
+          delay:4000,
+        }}
+        style={{width: '100%', flex: '1'}}
+      > 
+        {continents.map(continent => (
+          <SwiperSlide key={continent.slug}>
+            <Flex
+              w="100%"
+              h="100%"
+              align="center"
+              justify="center"
+              direction="column"
+              bgImage={`url('${continent.image}')`}
+              bgPosition="100% 30%"
+              bgRepeat="no-repeat"
+              bgSize="cover"
+              textAlign="center"
+            >
+              <Link href={`/continent/${continent.slug}`}>
+                <a>
+                  <Heading fontSize={["3xl","4xl","5xl"]} color="gray.100" fontWeight="bold">{continent.name}</Heading>
+                  <Text fontWeight="bold" color="gray.300" fontSize={["0.8rem","1xl", "2xl"]} mt={["2","4"]}>{continent.summary}</Text>
+                </a>
+              </Link>
+            </Flex>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </Flex>
-  );
+  )
 }

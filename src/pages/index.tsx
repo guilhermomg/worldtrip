@@ -2,14 +2,13 @@ import { Box, Center, Divider, Flex, Image, Stack, Text, useBreakpointValue, VSt
 import { GetStaticProps } from "next";
 import React from "react";
 
-import Carousel from "../components/Carousel";
 import Header from "../components/Header";
-import Slider from "../components/Slider";
+import Carousel from "../components/Carousel";
 import TravelTypes from "../components/TravelTypes";
 
 interface HomeProps {
     continents:{
-        id: number;
+        slug: string;
         name: string;
         summary: string;
         image: string;
@@ -84,7 +83,7 @@ export default function Home({ continents }: HomeProps) {
                 </Text>
             </Center>
 
-            <Slider continents={continents} />
+            <Carousel continents={continents} />
         </>
     )
 }     
@@ -93,13 +92,13 @@ export const getStaticProps: GetStaticProps = async() => {
 
     const continents = [
         {
-            id: 1,
+            slug: "europa",
             name: "Europa",
             summary: "asdasdsadd",
             image: "images/continents/europa/carousel-europa.svg",
         },
         {
-            id: 2,
+            slug: "america-do-sul",
             name: "América do Sul",
             summary: "asdasdsadd",
             image: "images/continents/europa/carousel-europa.svg",
